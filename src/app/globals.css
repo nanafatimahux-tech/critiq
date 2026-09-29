@@ -1,26 +1,118 @@
 @import "tailwindcss";
 
+/* Visual direction: see DESIGN.md. Manus's warm-neutral workspace (off-white
+   canvas, white bordered surfaces, near-black actions, serif display) plus
+   Codecademy's progress mechanics (mono labels, yellow XP, level ladder). No purple. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --canvas: #f8f8f6;
+  --surface: #ffffff;
+  --surface-2: #f3f2ef;
+  --border: #e6e5e1;
+  --border-strong: #d4d3ce;
+  --ink: #1a1a19;
+  --muted: #6b6b66;
+  --subtle: #8f8e88;
+  --accent: #1a1a19;
+  --accent-hover: #3a3a38;
+  --on-accent: #ffffff;
+  --accent-soft: #f1f0ec;
+  --accent-ink: #1a1a19;
+  --highlight: #ffe98a;
+  --xp: #ffd300;
+  --xp-soft: #fff6cc;
+  --xp-ink: #5c4a00;
+  --stage: #10162f;
+  --gap: #c2410c;
+  --gap-soft: #fdf0e9;
+  --dev: #a16207;
+  --dev-soft: #fef7e6;
+  --strong: #2f7d53;
+  --strong-soft: #eaf5ee;
+  --exc: #5c4a00;
+  --exc-soft: #fff3b8;
+  --na: #6b6b66;
+  --na-soft: #f1f0ec;
+  --crit: #b42318;
+  --crit-soft: #fdf0ef;
+  --shadow: 0 1px 2px rgb(26 26 25 / 0.04);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --canvas: #121211; --surface: #1a1a19; --surface-2: #222220; --border: #2e2e2b; --border-strong: #3d3d39;
+    --ink: #edece8; --muted: #a3a29c; --subtle: #7a7974; --accent: #edece8; --accent-hover: #ffffff; --on-accent: #121211;
+    --accent-soft: #262624; --accent-ink: #edece8; --highlight: #5c4a00; --xp: #ffd300; --xp-soft: #2e2810; --xp-ink: #ffe066;
+    --stage: #0b0f22; --gap: #fb8b5b; --gap-soft: #2e1a12; --dev: #f5b841; --dev-soft: #2b2311; --strong: #5ccf8d; --strong-soft: #11261a;
+    --exc: #ffe066; --exc-soft: #2e2810; --na: #a3a29c; --na-soft: #262624; --crit: #f97066; --crit-soft: #2d1515; --shadow: none;
   }
+}
+:root[data-theme="dark"] {
+  --canvas: #121211; --surface: #1a1a19; --surface-2: #222220; --border: #2e2e2b; --border-strong: #3d3d39;
+  --ink: #edece8; --muted: #a3a29c; --subtle: #7a7974; --accent: #edece8; --accent-hover: #ffffff; --on-accent: #121211;
+  --accent-soft: #262624; --accent-ink: #edece8; --highlight: #5c4a00; --xp: #ffd300; --xp-soft: #2e2810; --xp-ink: #ffe066;
+  --stage: #0b0f22; --gap: #fb8b5b; --gap-soft: #2e1a12; --dev: #f5b841; --dev-soft: #2b2311; --strong: #5ccf8d; --strong-soft: #11261a;
+  --exc: #ffe066; --exc-soft: #2e2810; --na: #a3a29c; --na-soft: #262624; --crit: #f97066; --crit-soft: #2d1515; --shadow: none;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-xp: var(--xp);
+  --color-xp-soft: var(--xp-soft);
+  --color-xp-ink: var(--xp-ink);
+  --color-stage: var(--stage);
+  --color-highlight: var(--highlight);
+  --color-gap: var(--gap);
+  --color-gap-soft: var(--gap-soft);
+  --color-dev: var(--dev);
+  --color-dev-soft: var(--dev-soft);
+  --color-strong: var(--strong);
+  --color-strong-soft: var(--strong-soft);
+  --color-exc: var(--exc);
+  --color-exc-soft: var(--exc-soft);
+  --color-na: var(--na);
+  --color-na-soft: var(--na-soft);
+  --color-crit: var(--crit);
+  --color-crit-soft: var(--crit-soft);
+  --shadow-card: var(--shadow);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-serif-display);
+  --font-mono: var(--font-plex-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+
+mark.evidence {
+  background: var(--highlight);
+  color: inherit;
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+
+/* Hatched empty track for progress bars (Codecademy). */
+.track-hatch {
+  background: repeating-linear-gradient(135deg, var(--border-strong) 0 1px, transparent 1px 5px), var(--surface-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+@keyframes pulse-dot { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+.animate-pulse-dot { animation: pulse-dot 1.2s ease-in-out infinite; }

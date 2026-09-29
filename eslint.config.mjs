@@ -12,6 +12,13 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    // Icons come from src/components/icons.ts so the set stays small and swappable.
+    ignores: ["src/components/icons.ts"],
+    rules: {
+      "no-restricted-imports": ["error", { paths: [{ name: "lucide-react", message: "Import icons from @/components/icons instead." }] }],
+    },
+  },
+  {
     ignores: [
       "node_modules/**",
       ".next/**",

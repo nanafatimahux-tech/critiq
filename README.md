@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Critiq
 
-## Getting Started
+Evidence-based portfolio reviews for product and UX designers. Critiq reads a
+portfolio (URL, PDF, or images), and produces a hiring-manager-style review
+where every finding points back to the exact page, quote, or image it's based on.
 
-First, run the development server:
+## Run it
+
+Requires Node 20+ (this machine has it at `~/.local/node/bin`).
 
 ```bash
+cp .env.example .env.local   # then add your ANTHROPIC_API_KEY
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. `/reviews/sample` shows a complete sample review
+and works without an API key.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How a review works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+Ingest → Portfolio model → Segment → Observe → Verify → Evaluate → Prioritize
+```
 
-## Learn More
+| Stage | Where | What it does |
+|---|---|---|
+| Ingest | `src/lib/ingest/` | Crawls the URL (same site, depth 2, ≤20 pages, respects robots.txt) and extracts PDFs/images into `Page → Block` records with stable ids like `p3.b12`. Unreadable/password pages are logged, never silently dropped. |
+| Segment | `pipeline/run.ts` + `llm.ts` | Claude classifies pages and groups them into case studies. |
+| Observe | `llm.ts` `OBSERVE_SYSTEM` | Per case study (in parallel): neutral observations, each with a block id + verbatim quote, or an explicit `missing` record. Images/PDF pages are sent for visual review. |
+| Verify | `pipeline/verify.ts` | Code checks every quote appears in the cited block. Unmatched observations are discarded and counted as a limitation. |
+| Evaluate | `llm.ts` `evaluateSystem` | Fixed 8-dimension rubric (`src/lib/rubric.ts`), conditioned on seniority and optional job description. Output cites observation ids only. |
+| Prioritize | `pipeline/run.ts` | Deterministic ranking: severity × dimension weight × confidence. Findings with no evidence and no stated missing evidence are dropped. |
 
-To learn more about Next.js, take a look at the following resources:
+Model: `claude-opus-5-5` via structured outputs, with server-side refusal
+fallback enabled (`fallbacks: "default"`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Storage is JSON files in `.data/` (reviews + uploads) — swap `src/lib/store.ts`
+for Postgres when adding accounts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Not built yet
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Version comparison between re-reviews (Re-review exists; diff view doesn't)
+- JavaScript-rendered portfolios (Framer/Webflow sites that render client-side) — needs a headless browser (Playwright)
+- Accounts, sharing, "ask about this finding" chat

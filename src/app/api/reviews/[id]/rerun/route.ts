@@ -1,6 +1,9 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { initialSteps, runReview } from "@/lib/pipeline/run";
 import { getReview, newId, saveReview } from "@/lib/store";
+
+export const runtime = "nodejs";
+export const maxDuration = 300;
 
 // Re-review the same inputs (e.g. after the designer updates their site).
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -12,6 +15,6 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     id, createdAt: now, updatedAt: now, status: "queued", steps: initialSteps(), input: prev.input,
     sources: [], pages: [], caseStudies: [], observations: [],
   });
-  void runReview(id);
+  after(() => runReview(id));
   return NextResponse.json({ id });
 }

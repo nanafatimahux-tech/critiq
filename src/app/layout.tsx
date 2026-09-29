@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
+import { Inter, Nunito } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const serif = Newsreader({ variable: "--font-serif-display", subsets: ["latin"], weight: ["400"], style: ["normal", "italic"] });
-const mono = IBM_Plex_Mono({ variable: "--font-plex-mono", subsets: ["latin"], weight: ["400", "500"] });
+const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"], weight: ["700", "800", "900"] });
 
 export const metadata: Metadata = {
   title: "Critiq — Portfolio reviews from a hiring manager's point of view",
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${serif.variable} ${mono.variable} antialiased min-h-screen`}>{children}</body>
+      <body className={`${inter.variable} ${nunito.variable} antialiased min-h-screen`}>{children}</body>
     </html>
   );
 }

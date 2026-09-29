@@ -28,7 +28,7 @@ export function ErrorState({ review }: { review: Review }) {
       <main className="mx-auto max-w-[560px] px-4 py-12 sm:py-20">
         <Card className="p-6 sm:p-8">
           <span className="grid size-10 place-items-center rounded-full bg-crit-soft text-crit"><AlertCircle className="size-5" /></span>
-          <h1 className="mt-4 font-serif text-2xl tracking-tight">{err.title}</h1>
+          <h1 className="mt-4 font-display font-black text-2xl tracking-tight">{err.title}</h1>
           <div className="mt-2"><InputSummary review={review} /></div>
 
           {err.reasons.length > 0 && (

@@ -37,7 +37,13 @@ export {
   Meh,
   ThumbsUp,
 
-  // Gamification: achievements
+  // Rubric dimensions
+  Compass,
+  Users,
+
+  // Gamification: achievements & rewards
+  Sparkles,
+  Zap,
   BookOpen,
   Crosshair,
   FlaskConical,

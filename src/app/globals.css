@@ -1,57 +1,55 @@
 @import "tailwindcss";
 
-/* Visual direction: see DESIGN.md. Manus's warm-neutral workspace (off-white
-   canvas, white bordered surfaces, near-black actions, serif display) plus
-   Codecademy's progress mechanics (mono labels, yellow XP, level ladder). No purple. */
+/* Visual direction: see DESIGN.md. Critiq's own palette — warm cream canvas,
+   coral signature, near-black outlines, gold for XP — using Preply's principles
+   (flat surfaces, outlined buttons, tight radii, soft tinted labels) as a guide.
+   No gradients, no glow. Light mode only. */
 :root {
-  --canvas: #f8f8f6;
+  /* Light only: keeps browser controls (selects, scrollbars) light too. */
+  color-scheme: light;
+  --canvas: #fbf8f3;
   --surface: #ffffff;
-  --surface-2: #f3f2ef;
-  --border: #e6e5e1;
-  --border-strong: #d4d3ce;
-  --ink: #1a1a19;
-  --muted: #6b6b66;
-  --subtle: #8f8e88;
-  --accent: #1a1a19;
-  --accent-hover: #3a3a38;
-  --on-accent: #ffffff;
-  --accent-soft: #f1f0ec;
-  --accent-ink: #1a1a19;
-  --highlight: #ffe98a;
-  --xp: #ffd300;
-  --xp-soft: #fff6cc;
-  --xp-ink: #5c4a00;
-  --stage: #10162f;
-  --gap: #c2410c;
-  --gap-soft: #fdf0e9;
-  --dev: #a16207;
-  --dev-soft: #fef7e6;
-  --strong: #2f7d53;
-  --strong-soft: #eaf5ee;
-  --exc: #5c4a00;
-  --exc-soft: #fff3b8;
-  --na: #6b6b66;
-  --na-soft: #f1f0ec;
-  --crit: #b42318;
-  --crit-soft: #fdf0ef;
-  --shadow: 0 1px 2px rgb(26 26 25 / 0.04);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --canvas: #121211; --surface: #1a1a19; --surface-2: #222220; --border: #2e2e2b; --border-strong: #3d3d39;
-    --ink: #edece8; --muted: #a3a29c; --subtle: #7a7974; --accent: #edece8; --accent-hover: #ffffff; --on-accent: #121211;
-    --accent-soft: #262624; --accent-ink: #edece8; --highlight: #5c4a00; --xp: #ffd300; --xp-soft: #2e2810; --xp-ink: #ffe066;
-    --stage: #0b0f22; --gap: #fb8b5b; --gap-soft: #2e1a12; --dev: #f5b841; --dev-soft: #2b2311; --strong: #5ccf8d; --strong-soft: #11261a;
-    --exc: #ffe066; --exc-soft: #2e2810; --na: #a3a29c; --na-soft: #262624; --crit: #f97066; --crit-soft: #2d1515; --shadow: none;
-  }
-}
-:root[data-theme="dark"] {
-  --canvas: #121211; --surface: #1a1a19; --surface-2: #222220; --border: #2e2e2b; --border-strong: #3d3d39;
-  --ink: #edece8; --muted: #a3a29c; --subtle: #7a7974; --accent: #edece8; --accent-hover: #ffffff; --on-accent: #121211;
-  --accent-soft: #262624; --accent-ink: #edece8; --highlight: #5c4a00; --xp: #ffd300; --xp-soft: #2e2810; --xp-ink: #ffe066;
-  --stage: #0b0f22; --gap: #fb8b5b; --gap-soft: #2e1a12; --dev: #f5b841; --dev-soft: #2b2311; --strong: #5ccf8d; --strong-soft: #11261a;
-  --exc: #ffe066; --exc-soft: #2e2810; --na: #a3a29c; --na-soft: #262624; --crit: #f97066; --crit-soft: #2d1515; --shadow: none;
+  --surface-2: #f4efe7;
+  --border: #e5ded3;
+  --border-strong: #cfc6b8;
+  --outline: #16140f;
+  --ink: #16140f;
+  --muted: #5c554b;
+  --subtle: #7d766b;
+  --accent: #ff6b4a;
+  --accent-hover: #ff5530;
+  --on-accent: #16140f;
+  --accent-soft: #ffe7df;
+  --accent-ink: #b8361a;
+  /* Coral deep enough for large headline text on the tinted band (≥3:1). */
+  --accent-strong: #e4431f;
+  --highlight: #ffd9cc;
+  --xp: #ffc933;
+  --xp-soft: #fff4d1;
+  --xp-ink: #6b5200;
+  --on-xp: #16140f;
+  --sky: #2f5bea;
+  --sky-soft: #e4ebff;
+  --sky-ink: #1f43b8;
+  --pink: #0e9aa7;
+  --pink-soft: #dcf4f5;
+  --pink-ink: #0a6d76;
+  --stage: #16140f;
+  --stage-2: #16140f;
+  --gap: #d9364c;
+  --gap-soft: #ffe5e8;
+  --dev: #b45309;
+  --dev-soft: #fdf0dc;
+  --strong: #11845b;
+  --strong-soft: #dcf3e8;
+  --exc: #6b5200;
+  --exc-soft: #fff4d1;
+  --na: #5c554b;
+  --na-soft: #f0ebe3;
+  --crit: #c8102e;
+  --crit-soft: #ffe3e6;
+  --shadow: 0 1px 0 rgb(22 20 15 / 0.04);
+  --shadow-lift: 0 1px 0 rgb(22 20 15 / 0.04);
 }
 
 @theme inline {
@@ -60,6 +58,7 @@
   --color-surface-2: var(--surface-2);
   --color-line: var(--border);
   --color-line-strong: var(--border-strong);
+  --color-outline: var(--outline);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-subtle: var(--subtle);
@@ -67,11 +66,20 @@
   --color-accent-hover: var(--accent-hover);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-strong: var(--accent-strong);
   --color-on-accent: var(--on-accent);
   --color-xp: var(--xp);
   --color-xp-soft: var(--xp-soft);
   --color-xp-ink: var(--xp-ink);
   --color-stage: var(--stage);
+  --color-stage-2: var(--stage-2);
+  --color-on-xp: var(--on-xp);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-sky-ink: var(--sky-ink);
+  --color-pink: var(--pink);
+  --color-pink-soft: var(--pink-soft);
+  --color-pink-ink: var(--pink-ink);
   --color-highlight: var(--highlight);
   --color-gap: var(--gap);
   --color-gap-soft: var(--gap-soft);
@@ -86,9 +94,9 @@
   --color-crit: var(--crit);
   --color-crit-soft: var(--crit-soft);
   --shadow-card: var(--shadow);
+  --shadow-lift: var(--shadow-lift);
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-serif-display);
-  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-nunito);
 }
 
 body {
@@ -105,13 +113,23 @@ mark.evidence {
   padding: 1px 2px;
 }
 
-/* Hatched empty track for progress bars (Codecademy). */
-.track-hatch {
-  background: repeating-linear-gradient(135deg, var(--border-strong) 0 1px, transparent 1px 5px), var(--surface-2);
+/* Flat header band: soft coral tint and a hairline, no gradient. */
+.banner {
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
 }
+
+/* Reward moments: confetti burst and floating +XP. */
+@keyframes burst { from { transform: translate(0, 0) scale(1); opacity: 1 } to { transform: translate(var(--dx), var(--dy)) scale(.4) rotate(160deg); opacity: 0 } }
+.burst-piece { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; border-radius: 2px; pointer-events: none; animation: burst .7s cubic-bezier(.2,.7,.3,1) forwards; }
+@keyframes float-up { 0% { transform: translate(-50%, 0); opacity: 0 } 15% { opacity: 1 } 100% { transform: translate(-50%, -34px); opacity: 0 } }
+.xp-float { position: absolute; left: 50%; bottom: 100%; pointer-events: none; animation: float-up 1s ease-out forwards; }
+@keyframes pop { 0% { transform: scale(.6); opacity: 0 } 70% { transform: scale(1.08) } 100% { transform: scale(1); opacity: 1 } }
+.animate-pop { animation: pop .35s cubic-bezier(.2,.8,.3,1.2) both; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  .burst-piece, .xp-float { display: none; }
 }
 
 @keyframes pulse-dot { 0%,100% { opacity: 1 } 50% { opacity: .35 } }

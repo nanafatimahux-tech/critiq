@@ -42,7 +42,7 @@ export function EvidenceChip({ ev }: { ev: EvidenceRef }) {
         <span className="line-clamp-2 text-ink">
           {isVisual ? (block.kind === "page" ? "Whole page (visual review)" : `Image — ${block.text || "no alt text"}`) : `“${ev.quote || block.text}”`}
         </span>
-        <span className="mt-0.5 block truncate font-mono text-xs text-muted group-hover:text-ink">{where} · {ev.blockId}</span>
+        <span className="mt-0.5 block truncate font-display font-extrabold text-xs text-muted group-hover:text-ink">{where} · {ev.blockId}</span>
       </span>
     </button>
   );
@@ -88,8 +88,8 @@ export function EvidenceDrawer({ active, onClose }: { active: EvidenceRef | null
       <aside className="relative flex h-full w-full max-w-[520px] flex-col border-l border-line bg-surface shadow-2xl">
         <header className="flex items-start justify-between gap-3 border-b border-line px-5 py-4">
           <div className="min-w-0">
-            <p className="font-mono text-xs font-medium tracking-wider text-muted uppercase">Evidence · <span className="normal-case">{block.id}</span></p>
-            <h2 className="mt-1 truncate font-serif text-xl">{page.title}</h2>
+            <p className="font-display font-extrabold text-xs tracking-wider text-muted uppercase">Evidence · <span className="normal-case">{block.id}</span></p>
+            <h2 className="mt-1 truncate font-display font-black text-xl">{page.title}</h2>
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
               {cs && cs.title !== page.title && <span>{cs.title}</span>}
               {page.pageNumber && <span className="inline-flex items-center gap-1"><FileText className="size-3" />Page {page.pageNumber}</span>}

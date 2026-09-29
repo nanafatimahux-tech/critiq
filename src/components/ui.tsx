@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { BAND_META } from "@/lib/rubric";
 import type { Band, Confidence, Severity } from "@/lib/types";
 
@@ -9,8 +9,8 @@ export function cx(...c: (string | false | null | undefined)[]) {
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight text-ink">
-      <span className="grid size-7 place-items-center rounded-lg bg-accent font-serif text-lg leading-none text-on-accent">C</span>
+    <Link href="/" className="group flex items-center gap-2 font-display text-lg font-black tracking-tight text-ink">
+      <span className="grid size-8 place-items-center rounded-lg border-2 border-outline bg-accent text-lg leading-none text-on-accent transition-transform group-hover:-rotate-6">C</span>
       Critiq
     </Link>
   );
@@ -18,7 +18,7 @@ export function Logo() {
 
 export function TopBar({ children }: { children?: ReactNode }) {
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-canvas/90 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-line bg-canvas/95 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6">
         <Logo />
         <div className="flex items-center gap-2">{children}</div>
@@ -29,24 +29,48 @@ export function TopBar({ children }: { children?: ReactNode }) {
 
 export function Card({ children, className, id }: { children: ReactNode; className?: string; id?: string }) {
   return (
-    <section id={id} className={cx("rounded-2xl border border-line bg-surface shadow-card", className)}>
+    <section id={id} className={cx("rounded-xl border border-line bg-surface", className)}>
       {children}
     </section>
   );
 }
 
-// Mono uppercase label for metadata and counters (Codecademy).
-export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={cx("font-mono text-xs font-medium tracking-wider text-muted uppercase", className)}>{children}</p>;
+// Soft tinted tile holding one icon.
+export type Tone = "accent" | "xp" | "sky" | "strong" | "pink" | "dev" | "gap";
+export const TONE: Record<Tone, string> = {
+  accent: "bg-accent-soft text-accent-ink",
+  xp: "bg-xp-soft text-xp-ink",
+  sky: "bg-sky-soft text-sky-ink",
+  strong: "bg-strong-soft text-strong",
+  pink: "bg-pink-soft text-pink-ink",
+  dev: "bg-dev-soft text-dev",
+  gap: "bg-gap-soft text-gap",
+};
+export function IconTile({ icon: Icon, tone = "accent", size = "md", className }: { icon: ComponentType<{ className?: string }>; tone?: Tone; size?: "sm" | "md" | "lg"; className?: string }) {
+  return (
+    <span className={cx("grid shrink-0 place-items-center", size === "sm" ? "size-8 rounded-lg" : size === "md" ? "size-10 rounded-lg" : "size-12 rounded-xl", TONE[tone], className)} aria-hidden>
+      <Icon className={size === "lg" ? "size-6" : size === "md" ? "size-5" : "size-4"} />
+    </span>
+  );
 }
 
-export function SectionTitle({ title, subtitle, right, eyebrow }: { title: string; subtitle?: string; right?: ReactNode; eyebrow?: string }) {
+export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
+  return <p className={cx("font-display text-xs font-extrabold tracking-wider text-accent-ink uppercase", className)}>{children}</p>;
+}
+
+export function SectionTitle({ title, subtitle, right, eyebrow, icon, tone }: {
+  title: string; subtitle?: string; right?: ReactNode; eyebrow?: string;
+  icon?: ComponentType<{ className?: string }>; tone?: Tone;
+}) {
   return (
-    <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
-      <div>
-        {eyebrow && <Eyebrow className="mb-1">{eyebrow}</Eyebrow>}
-        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
-        {subtitle && <p className="mt-0.5 text-sm text-muted">{subtitle}</p>}
+    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="flex min-w-0 items-center gap-3">
+        {icon && <IconTile icon={icon} tone={tone} />}
+        <div className="min-w-0">
+          {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+          <h2 className="font-display text-xl font-black tracking-tight">{title}</h2>
+          {subtitle && <p className="mt-0.5 text-sm text-muted">{subtitle}</p>}
+        </div>
       </div>
       {right}
     </div>
@@ -70,22 +94,22 @@ export const BAND_BAR: Record<Band, string> = {
 
 export function BandPill({ band }: { band: Band }) {
   return (
-    <span className={cx("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap", BAND_CLASS[band])}>
+    <span className={cx("inline-flex items-center rounded-full px-2.5 py-0.5 font-display text-xs font-extrabold whitespace-nowrap", BAND_CLASS[band])}>
       {BAND_META[band].label}
     </span>
   );
 }
 
 const SEV_CLASS: Record<Severity, string> = {
-  critical: "border-crit/30 bg-crit-soft text-crit",
-  high: "border-gap/30 bg-gap-soft text-gap",
-  medium: "border-dev/30 bg-dev-soft text-dev",
-  low: "border-line-strong bg-na-soft text-na",
+  critical: "border border-crit bg-crit-soft text-crit",
+  high: "bg-gap-soft text-gap",
+  medium: "bg-dev-soft text-dev",
+  low: "bg-na-soft text-na",
 };
 
 export function SeverityBadge({ severity }: { severity: Severity }) {
   return (
-    <span className={cx("inline-flex items-center rounded-full border px-2 py-px font-mono text-xs font-medium tracking-wider uppercase", SEV_CLASS[severity])}>
+    <span className={cx("inline-flex items-center rounded-full px-2.5 py-0.5 font-display text-xs font-extrabold tracking-wide uppercase", SEV_CLASS[severity])}>
       {severity}
     </span>
   );
@@ -97,7 +121,7 @@ export function ConfidenceTag({ confidence }: { confidence: Confidence }) {
     <span className="inline-flex items-center gap-1.5 text-xs text-muted" title={`${confidence} confidence`}>
       <span className="flex items-end gap-px" aria-hidden>
         {[1, 2, 3].map((i) => (
-          <span key={i} className={cx("w-[3px] rounded-sm", i <= bars ? "bg-ink" : "bg-line-strong")} style={{ height: 4 + i * 3 }} />
+          <span key={i} className={cx("w-[3px] rounded-sm", i <= bars ? "bg-sky" : "bg-line-strong")} style={{ height: 4 + i * 3 }} />
         ))}
       </span>
       <span>{confidence[0].toUpperCase() + confidence.slice(1)} confidence</span>
@@ -107,41 +131,44 @@ export function ConfidenceTag({ confidence }: { confidence: Confidence }) {
 
 export function Chip({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className={cx("inline-flex items-center gap-1 rounded-full border border-line bg-surface px-2.5 py-0.5 text-xs text-muted", className)}>
+    <span className={cx("inline-flex items-center gap-1 rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-xs text-muted", className)}>
       {children}
     </span>
   );
 }
 
+// Outlined buttons with tight corners (Preply-inspired), coloured by role.
+export const BUTTON_BASE = "inline-flex h-10 items-center justify-center gap-2 rounded-lg px-5 font-display text-[15px] font-extrabold transition-colors active:scale-[.98] disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+export const BUTTON_VARIANT = {
+  primary: "border-2 border-outline bg-accent text-on-accent hover:bg-accent-hover",
+  secondary: "border-2 border-outline bg-surface text-ink hover:bg-surface-2",
+  ghost: "text-muted hover:bg-accent-soft hover:text-accent-ink",
+  reward: "border-2 border-outline bg-xp text-on-xp hover:brightness-105",
+} as const;
+
 export function Button({
   children, variant = "primary", className, ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "ghost" }) {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: keyof typeof BUTTON_VARIANT }) {
   return (
-    <button
-      {...props}
-      className={cx(
-        "inline-flex h-9 items-center justify-center gap-2 rounded-full px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
-        variant === "primary" && "bg-accent text-on-accent hover:bg-accent-hover",
-        variant === "secondary" && "border border-line-strong bg-surface text-ink hover:bg-surface-2",
-        variant === "ghost" && "text-muted hover:bg-surface-2 hover:text-ink",
-        className,
-      )}
-    >
+    <button {...props} className={cx(BUTTON_BASE, BUTTON_VARIANT[variant], className)}>
       {children}
     </button>
   );
 }
 
-// Shared class for text links: ink with a quiet underline instead of a colour.
-export const LINK = "font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink";
+// Text links: coral ink with a soft underline.
+export const LINK = "font-semibold text-accent-ink underline decoration-accent/30 underline-offset-4 hover:decoration-accent";
 
-// Codecademy-style bar: hatched empty track, solid fill.
-export function ProgressBar({ value, max, tone = "xp", label }: { value: number; max: number; tone?: "xp" | "ink"; label: string }) {
+export function ProgressBar({ value, max, tone = "xp", label, size = "md" }: { value: number; max: number; tone?: "xp" | "accent" | "strong"; label: string; size?: "sm" | "md" }) {
   const pct = max ? Math.min(100, Math.round((value / max) * 100)) : 0;
   return (
     <div role="progressbar" aria-label={label} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}
-      className="track-hatch h-2.5 overflow-hidden rounded-full ring-1 ring-line ring-inset">
-      <div className={cx("h-full rounded-full transition-[width] duration-500", tone === "xp" ? "bg-xp" : "bg-ink")} style={{ width: `${pct}%` }} />
+      className={cx("overflow-hidden rounded-full bg-surface-2 ring-1 ring-line ring-inset", size === "md" ? "h-3.5" : "h-2")}>
+      <div
+        className={cx("relative h-full rounded-full transition-[width] duration-700 ease-out", tone === "xp" ? "bg-xp" : tone === "strong" ? "bg-strong" : "bg-accent")}
+        style={{ width: `${pct}%` }}
+      >
+      </div>
     </div>
   );
 }

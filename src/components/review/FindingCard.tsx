@@ -63,16 +63,16 @@ export function FindingCard({ finding, index, quest }: { finding: Finding; index
   const isGap = finding.kind === "gap";
   const fixed = !!quest?.done.has(finding.id);
   return (
-    <article id={finding.id} className={cx("scroll-mt-28 rounded-2xl border bg-surface shadow-card transition-colors sm:scroll-mt-52 lg:scroll-mt-40", fixed ? "border-xp" : "border-line")}>
+    <article id={finding.id} className={cx("scroll-mt-32 rounded-xl border-2 bg-surface transition-colors", fixed ? "border-strong" : "border-line")}>
       <header className="flex gap-3 px-4 pt-4 sm:px-5 sm:pt-5">
         {index !== undefined ? (
-          <span className={cx("grid size-8 shrink-0 place-items-center rounded-full font-mono text-xs font-medium tabular-nums", fixed ? "bg-xp text-[#1a1a19]" : "border border-line-strong")}>{String(index).padStart(2, "0")}</span>
+          <span className={cx("grid size-9 shrink-0 place-items-center rounded-lg border-2 font-display text-base font-black tabular-nums", fixed ? "border-strong bg-strong-soft text-strong" : "border-outline bg-accent text-on-accent")}>{String(index).padStart(2, "0")}</span>
         ) : (
-          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-strong-soft text-strong"><Check className="size-4" strokeWidth={2.5} /></span>
+          <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-strong-soft text-strong"><Check className="size-5" strokeWidth={2.5} /></span>
         )}
         <div className="min-w-0 flex-1">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h3 className="font-semibold leading-snug text-pretty">{finding.title}</h3>
+            <h3 className="font-display text-lg leading-snug font-black text-pretty">{finding.title}</h3>
             {isGap && quest && <FixToggle finding={finding} quest={quest} />}
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
@@ -112,10 +112,10 @@ export function FindingCard({ finding, index, quest }: { finding: Finding; index
         </div>
       </div>
 
-      <div className={cx("mx-4 mb-4 flex gap-2.5 rounded-xl px-3.5 py-3 sm:mx-5", isGap ? "bg-surface-2" : "bg-strong-soft")}>
-        <Lightbulb className={cx("mt-0.5 size-4 shrink-0", isGap ? "text-ink" : "text-strong")} />
+      <div className={cx("mx-4 mb-4 flex gap-2.5 rounded-xl px-3.5 py-3 sm:mx-5", isGap ? "bg-xp-soft" : "bg-strong-soft")}>
+        <Lightbulb className={cx("mt-0.5 size-4 shrink-0", isGap ? "text-xp-ink" : "text-strong")} />
         <div>
-          <p className={cx("font-mono text-xs font-medium tracking-wider uppercase", isGap ? "text-ink" : "text-strong")}>{isGap ? "How to fix it" : "Keep doing"}</p>
+          <p className={cx("font-display font-extrabold text-xs tracking-wider uppercase", isGap ? "text-xp-ink" : "text-strong")}>{isGap ? "How to fix it" : "Keep doing"}</p>
           <p className="mt-0.5 text-sm leading-relaxed text-pretty">{finding.recommendation}</p>
         </div>
       </div>

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.129.0",
+    "@vercel/blob": "^2.8.0",
     "cheerio": "^1.2.0",
     "lucide-react": "^1.48.0",
     "next": "15.5.26",
